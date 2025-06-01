@@ -1,30 +1,30 @@
 {
-  "brew it your way": [
+  "Milkshakes": [
     {
-      "name": "arabica authentica",
+      "name": "kitkat",
       "equipments": [
-        "Pour Over",
-        "Moka Pot",
-        "French Press",
-        "Vietnamese"
+        "4 scoop vanilla",
+        "1 kitkat",
+        "20ml choc souce",
+        "50milk"
       ]
     },
     {
-      "name": "into the dark wood (blend 80/20)",
+      "name": "Oreo",
       "equipments": [
-        "Pour Over",
-        "Moka Pot",
-        "French Press",
-        "Vietnamese"
+        "4 scoop vanilla",
+        "3 oreo",
+        "20ml choc souce",
+        "50ml milk"
       ]
     },
     {
-      "name": "solido merlot (blend 80/20)",
+      "name": "Ferrero Roacher",
       "equipments": [
-        "Pour Over",
-        "Moka Pot",
-        "French Press",
-        "Vietnamese"
+        "4 scoop vanilla",
+        "2 ferrero Roacher",
+        "20ml choc souce",
+        "50ml milk"
       ]
     },
     {
