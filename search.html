@@ -35,7 +35,7 @@
 
     #search {
       width: 100%;
-      padding: 12px 44px 12px 12px; /* Add right padding for clear button */
+      padding: 12px 44px 12px 12px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -136,9 +136,11 @@
       .then(res => res.json())
       .then(data => {
         for (const category in data) {
-          data[category].forEach(item => {
-            menuItems.push({ ...item, category });
-          });
+          if (!category.includes('©')) {
+            data[category].forEach(item => {
+              menuItems.push({ ...item, category });
+            });
+          }
         }
         displayCategories();
       })
@@ -164,7 +166,9 @@
       clearBtn.style.display = query ? 'flex' : 'none';
 
       if (query) {
-        const matches = menuItems.filter(item => item.name.toLowerCase().includes(query));
+        const matches = menuItems.filter(item =>
+          item.name.toLowerCase().includes(query)
+        );
         if (matches.length > 0) {
           showDetails(matches[0]);
           matches.forEach(item => {
