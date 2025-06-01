@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for better aesthetics and responsiveness */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top to allow scrolling */
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px; /* Max width for larger screens */
+            box-sizing: border-box;
+        }
+        input[type="text"] {
+            border: 1px solid #cbd5e1; /* Light gray border */
+            border-radius: 0.5rem; /* Rounded input field */
+            padding: 0.75rem 1rem;
+            width: 100%;
+            font-size: 1rem;
+            transition: border-color 0.2s ease-in-out;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6; /* Blue border on focus */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Focus ring */
+        }
+        .category-item {
+            background-color: #f8fafc; /* Lighter background for items */
+            border: 1px solid #e2e8f0; /* Subtle border */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .category-item:hover {
+            transform: translateY(-2px); /* Slight lift on hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        .category-name {
+            font-weight: 600; /* Semi-bold */
+            color: #1e293b; /* Darker text for name */
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem; /* Larger font size */
+        }
+        .category-description-line {
+            color: #475569; /* Gray text for description */
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .no-results {
+            text-align: center;
+            color: #64748b;
+            padding: 2rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Category Search</h1>
+
+        <div class="mb-6">
+            <label for="searchInput" class="block text-gray-700 text-sm font-medium mb-2">Search Categories:</label>
+            <input type="text" id="searchInput" placeholder="Type to search..." class="focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <div id="categoryList" class="space-y-4">
+            <p class="text-center text-gray-500">Loading categories...</p>
+        </div>
+    </div>
+
+    <script>
+        // Define the GitHub raw JSON URL
+        // IMPORTANT: Replace this with your actual GitHub raw JSON URL.
+        // For demonstration, I'm using a mock URL.
+        const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/google/gemini-canvas-samples/main/sample-data/categories.json';
+
+        let allCategories = []; // To store all fetched categories
+
+        // Function to fetch JSON data from the GitHub URL
+        async function fetchCategories() {
+            try {
+                const response = await fetch(GITHUB_JSON_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                // Ensure the data structure matches expectations
+                if (data && Array.isArray(data.categories)) {
+                    allCategories = data.categories;
+                    displayCategories(allCategories); // Display all categories initially
+                } else {
+                    console.error("Fetched data is not in the expected format:", data);
+                    document.getElementById('categoryList').innerHTML = '<p class="no-results">Error: Unexpected data format from GitHub.</p>';
+                }
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                document.getElementById('categoryList').innerHTML = '<p class="no-results">Failed to load categories. Please check the URL or your network connection.</p>';
+            }
+        }
+
+        // Function to display categories based on a search term
+        function displayCategories(categoriesToDisplay) {
+            const categoryListDiv = document.getElementById('categoryList');
+            categoryListDiv.innerHTML = ''; // Clear previous results
+
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            let foundCategories = false;
+
+            categoriesToDisplay.forEach(category => {
+                // Check if category name contains '©' symbol
+                if (category.name.includes('©')) {
+                    // console.log(`Skipping category with '©' symbol: ${category.name}`); // For debugging
+                    return; // Skip this category
+                }
+
+                // Filter by search term (case-insensitive)
+                if (category.name.toLowerCase().includes(searchTerm)) {
+                    foundCategories = true;
+                    const categoryItem = document.createElement('div');
+                    categoryItem.className = 'category-item';
+
+                    const categoryName = document.createElement('h2');
+                    categoryName.className = 'category-name';
+                    categoryName.textContent = category.name;
+                    categoryItem.appendChild(categoryName);
+
+                    if (Array.isArray(category.description)) {
+                        category.description.forEach(line => {
+                            const p = document.createElement('p');
+                            p.className = 'category-description-line';
+                            p.textContent = line;
+                            categoryItem.appendChild(p);
+                        });
+                    } else if (typeof category.description === 'string') {
+                        // Handle cases where description might be a single string
+                        const p = document.createElement('p');
+                        p.className = 'category-description-line';
+                        p.textContent = category.description;
+                        categoryItem.appendChild(p);
+                    }
+
+                    categoryListDiv.appendChild(categoryItem);
+                }
+            });
+
+            if (!foundCategories && searchTerm !== '') {
+                categoryListDiv.innerHTML = '<p class="no-results">No matching categories found.</p>';
+            } else if (!foundCategories && searchTerm === '' && allCategories.length > 0) {
+                 // This case should ideally not happen if allCategories is populated and no search term
+                 // It means all categories were filtered out by the '©' symbol or there are no categories
+                 if (categoryListDiv.children.length === 0) {
+                    categoryListDiv.innerHTML = '<p class="no-results">No categories to display (they might contain the "©" symbol).</p>';
+                 }
+            } else if (allCategories.length === 0 && !foundCategories) {
+                categoryListDiv.innerHTML = '<p class="no-results">No categories loaded or available.</p>';
+            }
+        }
+
+        // Event listener for the search input
+        document.getElementById('searchInput').addEventListener('input', () => {
+            displayCategories(allCategories); // Re-display and filter based on current input
+        });
+
+        // Fetch categories when the page loads
+        window.onload = fetchCategories;
+    </script>
+</body>
+</html>
