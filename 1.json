@@ -1,0 +1,17 @@
+{
+  "categories": [
+    {
+      "name": "Category 1",
+      "description": "Category 1 is a broad and versatile area of study that offers insights into various important domains. It serves as a foundation for understanding complex systems and practical applications. Learners are introduced to core concepts, practical tools, and real-world scenarios. Whether used in academia or industry, the knowledge from this category supports innovation and strategic growth. Many industries rely heavily on the skills developed in this field. From entry-level positions to advanced roles, proficiency here is highly valued. The curriculum often combines theory with hands-on experience. Topics typically include planning, analysis, and optimization techniques. As technology evolves, this category continues to expand in relevance and demand."
+    },
+    {
+      "name": "Category 2",
+      "description": "Category 2 focuses on creativity and design, offering users the tools to express ideas visually and conceptually. It plays a significant role in branding, marketing, and digital content development. Participants often engage in projects that involve design thinking and visual storytelling. Tools such as Adobe Creative Suite or similar platforms are commonly used. This field encourages experimentation, bold thinking, and collaboration. It aligns well with industries such as fashion, architecture, advertising, and multimedia production. Courses in this category blend theory with artistic freedom. The dynamic nature of visual trends makes this an ever-evolving domain. Skills gained here also enhance problem-solving and communication."
+    },
+    {
+      "name": "Category 3",
+      "description": "Category 3 explores the relationship between humans and their environment. It addresses issues related to sustainability, urban planning, and environmental policy. Participants study the impact of human actions on natural systems and work on solutions to reduce environmental degradation. This category emphasizes data-driven approaches to conservation and ecological balance. It integrates disciplines such as geography, biology, and sociology. Graduates often pursue careers in environmental science, consulting, or policy-making. The growing importance of climate change makes this field more critical than ever. Practical activities may include fieldwork, simulations, or policy reviews. Ethics, responsibility, and global citizenship are central themes in this area."
+    }
+    // ... up to Category 100
+  ]
+}
