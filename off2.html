@@ -15,21 +15,18 @@
       flex-direction: column;
       min-height: 100vh;
     }
-
     h2 {
       font-size: 24px;
       margin-bottom: 16px;
       color: #007BFF;
       cursor: pointer;
     }
-
     .search-container {
       position: relative;
       margin-bottom: 16px;
       display: flex;
       align-items: center;
     }
-
     #search {
       width: 100%;
       padding: 12px 44px 12px 12px;
@@ -37,7 +34,6 @@
       border: 1px solid #ccc;
       border-radius: 8px;
     }
-
     #clearBtn {
       position: absolute;
       right: 8px;
@@ -55,11 +51,9 @@
       align-items: center;
       justify-content: center;
     }
-
     #clearBtn:hover {
       background-color: #ddd;
     }
-
     .clickable {
       cursor: pointer;
       padding: 10px;
@@ -68,11 +62,9 @@
       border: 1px solid #ddd;
       border-radius: 8px;
     }
-
     .clickable:hover {
       background-color: #f1f1f1;
     }
-
     #results, #details, #categories {
       background: #fff;
       padding: 16px;
@@ -80,15 +72,12 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-top: 20px;
     }
-
     ul {
       padding-left: 20px;
     }
-
     h3 {
       margin-top: 0;
     }
-
     .category {
       padding: 10px;
       background: #fff;
@@ -97,11 +86,9 @@
       border-radius: 8px;
       cursor: pointer;
     }
-
     .category:hover {
       background-color: #f1f1f1;
     }
-
     footer {
       margin-top: auto;
       text-align: center;
@@ -113,20 +100,136 @@
 </head>
 <body>
   <h2 id="reload">Search Menu</h2>
-
   <div class="search-container">
     <input type="text" id="search" placeholder="Type a beverage name..." />
     <button id="clearBtn">&times;</button>
   </div>
-
   <div id="categories"></div>
   <div id="details"></div>
   <div id="results"></div>
-
   <footer>Made with ❤️ by Surendra Sonawane</footer>
 
   <script>
-    const menuData = /* paste entire JSON here */;
+    const menuData = {
+  "Milkshakes": [
+    {
+      "name": "kitkat",
+      "equipments": [
+        "4 scoop vanilla",
+        "1 kitkat",
+        "20ml choc souce",
+        "50milk"
+      ]
+    },
+    {
+      "name": "Oreo",
+      "equipments": [
+        "4 scoop vanilla",
+        "4 oreo",
+        "20ml choc souce",
+        "50ml milk"
+      ]
+    },
+    {
+      "name": "Ferrero Roacher",
+      "equipments": [
+        "4 scoop vanilla",
+        "2 ferrero 1 moments",
+        "20ml choc souce",
+        "50ml milk"
+      ]
+    },
+    {
+      "name": "mysore nuggets extra bold",
+      "equipments": [
+        "Pour Over",
+        "Moka Pot",
+        "French Press",
+        "Vietnamese"
+      ]
+    }
+  ],
+  "cold coffee": [
+    {
+      "name": "caramel frappe",
+      "sizes": {
+        "R": [
+          "30ml short",
+          "15ml caramel syp",
+          "10ml caremal sauce",
+          "50ml milk",
+          "10 ice",
+          "30g frappe"
+        ],
+        "L": [
+          "60ml short",
+          "20ml caramel syp",
+          "15ml caremal sauce",
+          "80ml milk",
+          "15 ice",
+          "40g frappe"
+        ]
+      }
+    },
+    {
+      "name": "hazelnut blast",
+      "sizes": {
+        "R": [
+          "30ml short",
+          "25ml hazelnut syp",
+          "50ml milk",
+          "10 ice",
+          "30g frappe"
+        ],
+        "L": [
+          "60ml short",
+          "30ml hazelnut syp",
+          "80ml milk",
+          "15 ice",
+          "40g frappe"
+        ]
+      }
+    },
+    {
+      "name": "cofee tiramisu",
+      "sizes": {
+        "R": [
+          "30ml short",
+          "25ml tiramisu syp",
+          "50ml milk",
+          "10 ice",
+          "30g frappe"
+        ],
+        "L": [
+          "60ml short",
+          "30ml tiramisu syp",
+          "80ml milk",
+          "15 ice",
+          "40g frappe"
+        ]
+      }
+    },
+    {
+      "name": "mocha frappe",
+      "sizes": {
+        "R": [
+          "30ml short",
+          "50ml milk",
+          "10 ice",
+          "30g frappe",
+          "20g chocolate powder"
+        ],
+        "L": [
+          "60ml short",
+          "80ml milk",
+          "15 ice",
+          "40g frappe",
+          "40g chocolate powder"
+        ]
+      }
+    }
+  ]
+};
 
     const searchInput = document.getElementById('search');
     const resultsDiv = document.getElementById('results');
