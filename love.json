@@ -475,14 +475,10 @@
       "sizes": {
         "R": [
           "3g tea leaves",
-          "200ml hot water",
-          "special chai 25g",
           "200ml hot water"
         ],
         "L": [
           "6g tea leaves",
-          "400ml hot water",
-          "special chai 40g",
           "400ml hot water"
         ]
       }
