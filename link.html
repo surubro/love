@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Menu Search</title>
+  <title>Link Search</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -61,7 +61,6 @@
     }
 
     .clickable {
-      cursor: pointer;
       padding: 10px;
       background: #fff;
       margin-bottom: 8px;
@@ -69,37 +68,22 @@
       border-radius: 8px;
     }
 
-    .clickable:hover {
-      background-color: #f1f1f1;
+    .clickable a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
-    #results, #details, #categories {
+    .clickable a:hover {
+      text-decoration: underline;
+    }
+
+    #results {
       background: #fff;
       padding: 16px;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-top: 20px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    h3 {
-      margin-top: 0;
-    }
-
-    .category {
-      padding: 10px;
-      background: #fff;
-      margin-bottom: 8px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .category:hover {
-      background-color: #f1f1f1;
     }
 
     footer {
@@ -109,115 +93,67 @@
       color: #555;
       padding: 20px 0;
     }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
-  <h2 id="reload">Search Menu</h2>
+  <h2 id="reload">Search Links</h2>
 
   <div class="search-container">
-    <input type="text" id="search" placeholder="Type a beverage name..." />
+    <input type="text" id="search" placeholder="Type item name..." />
     <button id="clearBtn">&times;</button>
   </div>
 
-  <div id="categories"></div>
-  <div id="details"></div>
   <div id="results"></div>
 
   <footer>Made with ❤️ by Surendra Sonawane</footer>
 
   <script>
-    const jsonUrl = 'https://raw.githubusercontent.com/surubro/love/refs/heads/main/link.json';
-    let menuItems = [];
-
     const searchInput = document.getElementById('search');
     const resultsDiv = document.getElementById('results');
-    const detailsDiv = document.getElementById('details');
-    const categoriesDiv = document.getElementById('categories');
     const clearBtn = document.getElementById('clearBtn');
+
+    let data = [];
 
     document.getElementById('reload').onclick = () => location.reload();
 
-    fetch(jsonUrl)
+    fetch('link.json')
       .then(res => res.json())
-      .then(data => {
-        for (const category in data) {
-          data[category].forEach(item => {
-            menuItems.push({ ...item, category });
-          });
-        }
-        displayCategories();
+      .then(json => {
+        data = json;
+        renderList(data);
       })
       .catch(err => {
-        resultsDiv.innerHTML = 'Failed to load menu data.';
+        resultsDiv.innerHTML = '<p style="color:red;">Failed to load menu data.</p>';
         console.error('Error loading JSON:', err);
       });
 
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
+    function renderList(list) {
       resultsDiv.innerHTML = '';
-      detailsDiv.innerHTML = '';
-      categoriesDiv.innerHTML = '';
-
-      clearBtn.style.display = query ? 'flex' : 'none';
-
-      if (query) {
-        const matches = menuItems.filter(item => item.name.toLowerCase().includes(query));
-        if (matches.length > 0) {
-          matches.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'clickable';
-            div.innerHTML = `<a href="${item.link}" target="_blank">${item.name} (${item.category})</a>`;
-            resultsDiv.appendChild(div);
-          });
-        } else {
-          resultsDiv.innerHTML = '<p>No matching items found.</p>';
-        }
-      }
-    });
-
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      clearBtn.style.display = 'none';
-      resultsDiv.innerHTML = '';
-      detailsDiv.innerHTML = '';
-      displayCategories();
-      searchInput.focus();
-    });
-
-    function displayCategories() {
-      categoriesDiv.innerHTML = '';
-      const categories = [...new Set(menuItems.map(item => item.category))];
-      categories.forEach(category => {
-        const categoryDiv = document.createElement('div');
-        categoryDiv.className = 'category';
-        categoryDiv.textContent = category;
-        categoryDiv.onclick = () => showCategoryItems(category);
-        categoriesDiv.appendChild(categoryDiv);
-      });
-    }
-
-    function showCategoryItems(category) {
-      resultsDiv.innerHTML = '';
-      detailsDiv.innerHTML = '';
-      categoriesDiv.innerHTML = '';
-      const categoryItems = menuItems.filter(item => item.category === category);
-      categoryItems.forEach(item => {
+      list.forEach(item => {
         const div = document.createElement('div');
         div.className = 'clickable';
         div.innerHTML = `<a href="${item.link}" target="_blank">${item.name}</a>`;
         resultsDiv.appendChild(div);
       });
     }
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+      clearBtn.style.display = query ? 'flex' : 'none';
+      if (!query) {
+        renderList(data);
+        return;
+      }
+      const filtered = data.filter(item => item.name.toLowerCase().includes(query));
+      renderList(filtered);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearBtn.style.display = 'none';
+      renderList(data);
+      searchInput.focus();
+    });
   </script>
 </body>
 </html>
